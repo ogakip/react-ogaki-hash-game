@@ -1,5 +1,10 @@
 import React from 'react';
+import { GameTable } from './components/game_table';
 
 export const App = () => {
-	return <div></div>;
+	return (
+		<div>
+			<GameTable />
+		</div>
+	);
 };
