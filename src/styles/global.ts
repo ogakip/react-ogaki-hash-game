@@ -12,6 +12,7 @@ export const GlobalStyles = createGlobalStyle`
 :root {
  --primary-color: #0A0B0D;
  --secondary-color: #5D75A6;
- --background-color: #B9B4D9
+ --background-color: #B9B4D9;
+ --toastify-color-success: #5D75A6;
 }
 `;
