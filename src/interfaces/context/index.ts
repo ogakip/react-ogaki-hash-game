@@ -11,6 +11,7 @@ export interface squareProps {
 
 export interface gameProviderProps {
 	playerMove: (squareId: number) => void;
+	resetGame: () => void,
 	table: squareProps[],
 	currentPlayer: string,
 	amountMoves: number,

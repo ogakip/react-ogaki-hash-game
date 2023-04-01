@@ -14,6 +14,7 @@ import { toast } from 'react-toastify';
 
 const initialValue = {
 	playerMove: () => '',
+	resetGame: () => '',
 	table: [],
 	currentPlayer: 'X',
 	amountMoves: 0,
@@ -43,7 +44,7 @@ export const GameProvider: FC<PropsWithChildren<contextProps>> = ({
 	const [p2Moves, setP2Moves] = useState<number[]>([]);
 	const [isOver, setIsOver] = useState(false);
 
-	function createSquares () {
+	function createSquares() {
 		const squares = [];
 		for (let currentSquare = 1; currentSquare <= 9; currentSquare++) {
 			squares.push({
@@ -54,6 +55,15 @@ export const GameProvider: FC<PropsWithChildren<contextProps>> = ({
 		}
 		return squares;
 	}
+
+	const resetGame = () => {
+		setCurrentPlayer('X');
+		setAmountMoves(0);
+		setTable(createSquares);
+		setP1Moves([]);
+		setP2Moves([]);
+		setIsOver(false);
+	};
 
 	const gameWasDraw = (newTable: squareProps[]) => {
 		const result = newTable.every((square) => square.checked === true);
@@ -131,6 +141,7 @@ export const GameProvider: FC<PropsWithChildren<contextProps>> = ({
 		<GameContext.Provider
 			value={{
 				playerMove,
+				resetGame,
 				table,
 				currentPlayer,
 				amountMoves,
