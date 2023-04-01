@@ -9,6 +9,17 @@ export const GlobalStyles = createGlobalStyle`
  font-family: 'Nunito', sans-serif;
 }
 
+.App {
+ width: 100vw;
+ height: 100vh;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ gap: 20px;
+ background-color: var(--background-color);
+}
+
 :root {
  --primary-color: #0A0B0D;
  --secondary-color: #5D75A6;
