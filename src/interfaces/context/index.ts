@@ -11,5 +11,8 @@ export interface squareProps {
 
 export interface gameProviderProps {
 	playerMove: (squareId: number) => void;
-	table: squareProps[]
+	table: squareProps[],
+	currentPlayer: string,
+	amountMoves: number,
+	isOver: boolean,
 }

@@ -15,19 +15,11 @@ import { toast } from 'react-toastify';
 const initialValue = {
 	playerMove: () => '',
 	table: [],
+	currentPlayer: 'X',
+	amountMoves: 0,
+	isOver: false,
 };
 
-const createSquares = () => {
-	const squares = [];
-	for (let currentSquare = 1; currentSquare <= 9; currentSquare++) {
-		squares.push({
-			id: currentSquare,
-			checked: false,
-			player: '',
-		});
-	}
-	return squares;
-};
 const combinations = [
 	[1, 2, 3],
 	[4, 5, 6],
@@ -51,16 +43,39 @@ export const GameProvider: FC<PropsWithChildren<contextProps>> = ({
 	const [p2Moves, setP2Moves] = useState<number[]>([]);
 	const [isOver, setIsOver] = useState(false);
 
-	const gameIsOver = (playerMoves: number[]) => {
-		console.log(playerMoves);
-		console.log(
-			combinations.some((combination) =>
-				combination.every((num) => playerMoves.includes(num)),
-			),
-		);
-		return combinations.some((combination) =>
+	function createSquares () {
+		const squares = [];
+		for (let currentSquare = 1; currentSquare <= 9; currentSquare++) {
+			squares.push({
+				id: currentSquare,
+				checked: false,
+				player: '',
+			});
+		}
+		return squares;
+	}
+
+	const gameWasDraw = (newTable: squareProps[]) => {
+		const result = newTable.every((square) => square.checked === true);
+		if (result) {
+			toast.warn('O jogo deu empate!');
+		}
+	};
+
+	const gameIsOver = (
+		playerMoves: number[],
+		player: string,
+		nextPlayer: string,
+	) => {
+		const result = combinations.some((combination) =>
 			combination.every((num) => playerMoves.includes(num)),
 		);
+		if (result) {
+			setIsOver(true);
+			toast.success(`${player} ganhou!`);
+		} else {
+			setCurrentPlayer(nextPlayer);
+		}
 	};
 
 	const alreadyCheckedSquare = (squareId: number) => {
@@ -92,6 +107,7 @@ export const GameProvider: FC<PropsWithChildren<contextProps>> = ({
 				return square;
 			}
 		});
+		gameWasDraw(newTable);
 		setTable(newTable);
 	};
 
@@ -101,48 +117,22 @@ export const GameProvider: FC<PropsWithChildren<contextProps>> = ({
 			setAmountMoves((prevState) => prevState + 1);
 			if (currentPlayer === 'X') {
 				setP1Moves([...p1Moves, squareId]);
-				if (gameIsOver([...p1Moves, squareId])) {
-					setIsOver(true);
-					toast.success('X ganhou');
-				} else {
-					setCurrentPlayer('O');
-				}
+				gameIsOver([...p1Moves, squareId], 'X', 'O');
 			} else {
 				setP2Moves([...p2Moves, squareId]);
-				if (gameIsOver([...p2Moves, squareId])) {
-					setIsOver(true);
-					toast.success('O ganhou');
-				} else {
-					setCurrentPlayer('X');
-				}
+				gameIsOver([...p2Moves, squareId], 'O', 'X');
 			}
 		}
 	};
-
-	useEffect(() => {
-		if (currentPlayer) {
-			console.log({ currentPlayer });
-		}
-	}, [currentPlayer]);
-
-	useEffect(() => {
-		if (p1Moves && p2Moves) {
-			console.log({ p1Moves });
-			console.log({ p2Moves });
-		}
-	}, [p1Moves, p2Moves]);
-
-	useEffect(() => {
-		if (table) {
-			console.log({ table });
-		}
-	}, [table]);
 
 	return (
 		<GameContext.Provider
 			value={{
 				playerMove,
 				table,
+				currentPlayer,
+				amountMoves,
+				isOver,
 			}}
 		>
 			{children}
