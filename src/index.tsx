@@ -5,6 +5,7 @@ import { App } from './App';
 import { ContextProvider } from './context';
 import reportWebVitals from './reportWebVitals';
 import 'react-toastify/dist/ReactToastify.css';
+import { GlobalStyles } from './styles/global';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement,
@@ -14,6 +15,7 @@ root.render(
 		<ContextProvider>
 			<App />
 			<ToastContainer />
+			<GlobalStyles />
 		</ContextProvider>
 	</React.StrictMode>,
 );
