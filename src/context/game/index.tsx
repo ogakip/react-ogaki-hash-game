@@ -66,6 +66,7 @@ export const GameProvider: FC<PropsWithChildren<contextProps>> = ({
 		playerMoves: number[],
 		player: string,
 		nextPlayer: string,
+		checkTable: squareProps[],
 	) => {
 		const result = combinations.some((combination) =>
 			combination.every((num) => playerMoves.includes(num)),
@@ -74,6 +75,7 @@ export const GameProvider: FC<PropsWithChildren<contextProps>> = ({
 			setIsOver(true);
 			toast.success(`${player} ganhou!`);
 		} else {
+			gameWasDraw(checkTable);
 			setCurrentPlayer(nextPlayer);
 		}
 	};
@@ -107,20 +109,20 @@ export const GameProvider: FC<PropsWithChildren<contextProps>> = ({
 				return square;
 			}
 		});
-		gameWasDraw(newTable);
 		setTable(newTable);
+		return newTable;
 	};
 
 	const playerMove = (squareId: number) => {
 		if (alreadyCheckedSquare(squareId) === false && isOver === false) {
-			checkSquare(squareId);
+			const checkTable = checkSquare(squareId);
 			setAmountMoves((prevState) => prevState + 1);
 			if (currentPlayer === 'X') {
 				setP1Moves([...p1Moves, squareId]);
-				gameIsOver([...p1Moves, squareId], 'X', 'O');
+				gameIsOver([...p1Moves, squareId], 'X', 'O', checkTable);
 			} else {
 				setP2Moves([...p2Moves, squareId]);
-				gameIsOver([...p2Moves, squareId], 'O', 'X');
+				gameIsOver([...p2Moves, squareId], 'O', 'X', checkTable);
 			}
 		}
 	};
