@@ -6,7 +6,7 @@ export const App = () => {
 	return (
 		<div className="App">
 			<GameHeader />
-			console.log("viado")
+			console.log("viadinho")
 			<GameTable />
 		</div>
 	);
