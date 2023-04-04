@@ -6,6 +6,7 @@ export const App = () => {
 	return (
 		<div className="App">
 			<GameHeader />
+			console.log("viado")
 			<GameTable />
 		</div>
 	);
